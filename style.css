@@ -68,3 +68,15 @@ body {
 .message-container {
     height: 30px;
 }
+
+.message-container p {
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0;
+}
+.message-container p.win {
+    background-color: green;
+}
+.message-container p.lose {
+    background-color: red;
+}

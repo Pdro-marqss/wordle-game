@@ -1,5 +1,6 @@
 const tileDisplay = document.querySelector('.tile-container');
 const keyboard = document.querySelector('.key-container');
+const messageDisplay = document.querySelector('.message-container')
 
 const wordle = 'SUPER';
 
@@ -43,6 +44,7 @@ const guessRows = [
 ]
 let currentRow = 0
 let currentTile = 0
+let isGameOver = false
 
 //Adiciona o layout dos quadrados das letras
 guessRows.forEach((guessRow, guessRowIndex) => {
@@ -69,17 +71,75 @@ keys.forEach(key => {
 
 const handleClick = (key) => {
     console.log('clicked', key)
+    if(key === '<<'){
+        deleteLetter()
+        console.log('guessRows', guessRows)
+        return
+    }
+    if(key === 'ENTER'){
+        checkRow()
+        console.log('guessRows', guessRows)
+        return
+    }
     addLetter(key)
+    console.log('guessRows', guessRows)
 }
 
 const addLetter = (key) => {
-    const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
-    tile.textContent = key
-    guessRows[currentRow][currentTile] = key
-    currentTile++
-    console.log('guessRows', guessRows)
-    // if(currentTile == '5'){
-    //     currentRow++
-    //     currentTile = 0;
-    // }
+    if(currentTile < 5 && currentRow < 6){
+        const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+        tile.textContent = key
+        guessRows[currentRow][currentTile] = key
+        tile.setAttribute('data', key)
+        currentTile++
+        console.log('guessRows', guessRows)
+    }
+}
+
+const deleteLetter = () => {
+    if(currentTile > 0){
+        currentTile--
+        const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+        tile.textContent = ''
+        guessRows[currentRow][currentTile] = ''
+        tile.setAttribute('data', '')
+    }
+}
+
+const checkRow = () => {
+    const guess = guessRows[currentRow].join('') //join retorna os elementos do array como uma string
+
+    if(currentTile > 4){
+        console.log('guess is ' + guess, 'wordle is ' + wordle)
+        if(wordle == guess){
+            showMessageWin('Parabéns! Você acertou!')
+            isGameOver = true
+            return
+        } else {
+            if(currentRow >= 5){
+                isGameOver = false
+                showMessageLose('Você perdeu!')
+                return
+            }
+            if(currentRow < 5){
+                currentRow++
+                currentTile = 0
+            }
+        }
+    }
+}
+
+const showMessageWin = (message) => {
+    const messageElement = document.createElement('p')
+    messageElement.textContent = message
+    messageElement.classList.add('win')
+    messageDisplay.append(messageElement)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
+}
+const showMessageLose = (message) => {
+    const messageElement = document.createElement('p')
+    messageElement.textContent = message
+    messageElement.classList.add('lose')
+    messageDisplay.append(messageElement)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
 }
