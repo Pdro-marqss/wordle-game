@@ -2,7 +2,7 @@ const tileDisplay = document.querySelector('.tile-container');
 const keyboard = document.querySelector('.key-container');
 const messageDisplay = document.querySelector('.message-container')
 
-const wordle = 'SUPER';
+const wordle = 'PORTA';
 
 const keys = [
     'Q',
@@ -111,6 +111,7 @@ const checkRow = () => {
 
     if(currentTile > 4){
         console.log('guess is ' + guess, 'wordle is ' + wordle)
+        flipTile()
         if(wordle == guess){
             showMessageWin('Parabéns! Você acertou!')
             isGameOver = true
@@ -142,4 +143,23 @@ const showMessageLose = (message) => {
     messageElement.classList.add('lose')
     messageDisplay.append(messageElement)
     setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
+}
+
+const flipTile = () => {
+    const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
+    rowTiles.forEach((tile, index) => {
+        const dataKey = tile.getAttribute('data')
+
+        setTimeout (() => {
+            tile.classList.add('flip')
+            if(dataKey == wordle[index]){
+                tile.classList.add('green-overlay')
+            } else if (wordle.includes(dataKey)){
+                tile.classList.add('yellow-overlay')
+            } else {
+                tile.classList.add('grey-overlay')
+            }
+        }, 500 * index)
+
+    })
 }
