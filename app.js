@@ -140,13 +140,21 @@ const showMessageWin = (message) => {
     messageElement.classList.add('win')
     messageDisplay.append(messageElement)
     setTimeout(() => messageDisplay.removeChild(messageElement), 4000)
+    if(wordleArray.filter(word => word === wordle)) {
+        wordleArray.splice(wordleArray.indexOf(wordle), 1)
+        console.log(wordleArray)
+    }
 }
 const showMessageLose = (message) => {
     const messageElement = document.createElement('p')
     messageElement.textContent = message
     messageElement.classList.add('lose')
     messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement), 3000)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 4000)
+    if(wordleArray.filter(word => word === wordle)) {
+        wordleArray.splice(wordleArray.indexOf(wordle), 1)
+        console.log(wordleArray)
+    }
 }
 
 const addColorToKey = (dataKey, color) => {
@@ -185,3 +193,5 @@ const flipTile = () => {
 
     })
 }
+
+//PROJETO FINALIZADO :D
